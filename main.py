@@ -2,7 +2,7 @@ import time, os, sys, getpass, re, string
 
 fp = input('FilePath: ')
 
-if '.ps' in fp:
+if '.pys' in fp:
   try:
     f = open(f'{fp}')
   except:
