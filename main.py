@@ -2,7 +2,7 @@ import time, os, sys, getpass, re, string
 
 fp = input('FilePath: ')
 
-if '.pys' in fp:
+if '.pys' in fp:#hmmmm
   try:
     f = open(f'{fp}')
   except:
@@ -23,6 +23,9 @@ def wait_until(somepredicate, timeout, period=0.25, *args, **kwargs):
       if somepredicate(*args, **kwargs): return True
       time.sleep(period)
     return False
+
+class InvalidVariableError(Exception):
+  pass
 
 allvars = {}
 line = 0
@@ -80,9 +83,10 @@ file = open(fp)
 readline2 = 0
 for lines in file.readlines():
     if "/*" in lines:
-      wait_until("*/", 0)
       readline2=1
+      wait_until("*/", 0)
     if readline2 == 1:
+      readline2 = 0
       continue
     if "//" in lines:#maybe change to /#
       readline2=1
@@ -95,8 +99,8 @@ for lines in file.readlines():
     elif lines in string.whitespace:
       pass
     elif "/*" in lines:
-      wait_until("*/", 0)
       pass
+      wait_until("*/", 0)
     elif "//" in lines:
       pass
     lines = lines.rstrip()
@@ -109,6 +113,10 @@ for lines in file.readlines():
       newvar.replace('\"', '')
       newvar = split_string[0]
       allvars[newvar] = 0
+
+    '''
+    Note that `;`'s are strictly required in this language
+    '''
     
     if "//" in lines:
       pass
@@ -127,9 +135,47 @@ for lines in file.readlines():
         allvars[newvar] = var
       else:
         if var not in allvars:
-          exit()#error
+          raise InvalidVariableError("Such a variable does not exist!")
         else:
-          exit()#error
+          pass
+    elif "prompt(" in lines:
+      wrd = "prompt("
+      var = lines.partition(wrd)[2]
+      split_string = var.split(");", -1)
+      var.replace(');','')
+      var.replace('\"',"")
+      var = split_string[0]
+      var.strip(");")
+
+      if var in allvars:
+        var = input()
+        allvars[newvar] = var
+      else:
+        if var not in allvars:
+          raise InvalidVariableError("Such a variable does not exist!")
+        else:
+          pass
+    elif "console.input(" in lines:
+      wrd = "console.input("
+      var = lines.partition(wrd)[2]
+      split_string = var.split(");", -1)
+      var.replace(');','')
+      var.replace('\"',"")
+      var = split_string[0]
+      var.strip(");")
+
+      if var in allvars:
+        var = input()
+        allvars[newvar] = var
+      else:
+        if var not in allvars:
+          raise InvalidVariableError("Such a variable does not exist!")
+        else:
+          pass
+
+
+    elif "window.alert(" in lines:
+      wrd = "window.alert("
 
     else:
       pass

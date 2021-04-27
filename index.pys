@@ -1,2 +1,3 @@
-var e
-window.prompt(e)
+var jb
+
+console.input(jb);
