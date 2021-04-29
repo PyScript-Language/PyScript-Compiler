@@ -27,6 +27,12 @@ def wait_until(somepredicate, timeout, period=0.25, *args, **kwargs):
 class InvalidVariableError(Exception):
   pass
 
+class InvalidSyntaxError(Exception):
+  pass
+
+class Error(Exception):
+  pass
+
 allvars = {}
 line = 0
 read_line=0
@@ -105,15 +111,6 @@ for lines in file.readlines():
       pass
     lines = lines.rstrip()
 
-    if "var " in lines:
-      wrd = "var "
-      newvar = lines.partition(wrd)[2]
-      split_string = newvar.split("\")", -1)
-      newvar.replace(")","")
-      newvar.replace('\"', '')
-      newvar = split_string[0]
-      allvars[newvar] = 0
-
     '''
     Note that `;`'s are strictly required in this language
     '''
@@ -121,6 +118,56 @@ for lines in file.readlines():
     if "//" in lines:
       pass
       read_line = 0
+    elif "var " in lines:
+      wrd = "var "
+      newvar = lines.partition(wrd)[2]
+      split_string = newvar.split("\")", -1)
+      newvar.replace(")","")
+      newvar.replace('\"', '')
+      newvar = split_string[0]
+      #newvar = variable;
+      if newvar[-1] == ";":
+        if ";" in newvar[:-1]:
+          raise InvalidSyntaxError("You must only include one semi-colon!")
+        else:
+          newvarTEST = newvar[-1]
+          newvar = newvar.replace(";","")#make ; disappear into blank space
+      else:
+        raise InvalidSyntaxError("Statement is missing semi-colon!")
+      if " " in newvar:
+        raise InvalidSyntaxError("Variables cannot include spaces!")
+      else:
+        allvars[newvar] = 0
+
+      '''
+      try:
+        newvar2 = lines.partition(wrd)[3]
+        split_string = newvar2.split("\")", -1)
+        newvar2.replace(")","")
+        newvar2.replace('\"', '')
+        newvar2 = newvar2.replace("=",'')
+        newvar2 = newvar2.replace(" ","")
+        print(newvar2)
+        newvar2 = split_string[0]
+        if newvar2 == "=":
+          pass
+        else:
+          newvar2 = lines.partition(wrd)[4]
+          split_string = newvar2.split("\")", -1)
+          newvar2.replace(")","")
+          newvar2.replace('\"', '')
+          newvar2 = split_string[0]
+
+          if newvar2 == "=":
+            pass
+          else:
+            pass
+            #raise InvalidSyntaxError("")
+      except:
+        pass
+      '''
+      
+
     elif "window.prompt(" in lines:
       wrd = "window.prompt("
       var = lines.partition(wrd)[2]
@@ -135,7 +182,7 @@ for lines in file.readlines():
         allvars[newvar] = var
       else:
         if var not in allvars:
-          raise InvalidVariableError("Such a variable does not exist!")
+          raise InvalidVariableError(f"'{var}' variable does not exist!")
         else:
           pass
     elif "prompt(" in lines:
@@ -152,7 +199,7 @@ for lines in file.readlines():
         allvars[newvar] = var
       else:
         if var not in allvars:
-          raise InvalidVariableError("Such a variable does not exist!")
+          raise InvalidVariableError(f"'{var}' variable does not exist!")
         else:
           pass
     elif "console.input(" in lines:
@@ -169,7 +216,7 @@ for lines in file.readlines():
         allvars[newvar] = var
       else:
         if var not in allvars:
-          raise InvalidVariableError("Such a variable does not exist!")
+          raise InvalidVariableError(f"'{var}' variable does not exist!")
         else:
           pass
 
