@@ -1,5 +1,7 @@
 import time, os, sys, getpass, re, string
 
+#Note: Make modules to contribute to this language
+
 fp = input('FilePath: ')
 
 if '.pys' in fp:#hmmmm
@@ -24,10 +26,14 @@ def wait_until(somepredicate, timeout, period=0.25, *args, **kwargs):
       time.sleep(period)
     return False
 
+#all errors
 class InvalidVariableError(Exception):
   pass
 
 class InvalidSyntaxError(Exception):
+  pass
+
+class InvalidIndentationError(Exception):
   pass
 
 class Error(Exception):
@@ -45,43 +51,149 @@ input2 = "Undefined input"
 input3 = "Undefined input"
 
 
-def pTAG():
+def WINDOWalert():#add f'string
   try:
-    if '</p>' in lines:#maybe replace </p> with </>?
-      wrd = '<p>'
+    if '");' in lines or "');" in lines or "`);" in lines:
+      wrd = "window.alert("
       res = lines.partition(wrd)[2]
-      res = res.replace('</p>', '')
-      #res = res.replace(' ', '')
-      res = res.replace('{getChar1}', getChar1)
-      res = res.replace('{getChar2}', getChar2)
-      res = res.replace('{getChar3}', getChar3)
-      res = res.replace("{{input1}}", input1)
-      res = res.replace("{{input2}}", input2)
-      res = res.replace("{{input3}}", input3)
-      res = res.replace("{{var1}}", var1)
+      res = res.replace("\");","")
+      res = res.replace('`);',"")
+      res = res.replace('\');',"")
+      res = res.replace("/n", "\n")
+      res = res.replace("/t", "\t")
+      if "\"" in res:
+        split_string = res.split("\");", -1)
+      elif "'" in res:
+        split_string = res.split("\');", -1)
+      elif "`" in res:
+        split_string = res.split("`);", -1)
+      else:
+        raise InvalidSyntaxError("The 'window.alert' statement is missing quotations!")
+      res = split_string[0]
+      res = res.replace("\");","")
+      res = res.replace('`);',"")
+      res = res.replace('\');',"")
+      res = res.replace("/n", "\n")
+      res = res.replace("/t", "\t")
+      #colors: res = res.replace("{red}", red)
+      res = res.replace('"', "")
+      res = res.replace("'", "")
+      res = res.replace("`", "")
+      res = res.replace(");","")
 
       if "{{" in res:
         if "}}" in res:
           start = "{{"
           end = "}}"
           check = res[res.find(start) + len(start):res.rfind(end)]
-              
           if check in allvars:
-            res = res.replace('{{','')
-            res = res.replace('}}','')
-            e = allvars[check]
-            res = res.replace(check, str(e))
+            res = res.replace("{{", "")
+            res = res.replace("}}", "")
+            dffdfdfdf = allvars[check]
+            res = res.replace(check, str(dffdfdfdf))
           else:
-            exit()#add error
-
-      #wait_until("</p>", 0)
-      split_string = res.split("</p>", -1)
-      res = split_string[0]
-      print(res)
+            raise InvalidVariableError(f"'{var}' variable does not exist!")
+      print(res, end="")
     else:
-      pass
+      raise InvalidSyntaxError("The 'window.alert' statement must have a closing ');!")
   except:
-    exit()
+    raise InvalidSyntaxError("The 'window.alert' statement must have a closing ');!")
+
+def alert():
+  try:
+    if '");' in lines or "');" in lines or "`);" in lines:
+      wrd = "alert("
+      res = lines.partition(wrd)[2]
+      res = res.replace("\");","")
+      res = res.replace('`);',"")
+      res = res.replace('\');',"")
+      res = res.replace("/n", "\n")
+      res = res.replace("/t", "\t")
+      if "\"" in res:
+        split_string = res.split("\");", -1)
+      elif "'" in res:
+        split_string = res.split("\');", -1)
+      elif "`" in res:
+        split_string = res.split("`);", -1)
+      else:
+        raise InvalidSyntaxError("The 'alert' statement is missing quotations!")
+      res = split_string[0]
+      res = res.replace("\");","")
+      res = res.replace('`);',"")
+      res = res.replace('\');',"")
+      res = res.replace("/n", "\n")
+      res = res.replace("/t", "\t")
+      #colors: res = res.replace("{red}", red)
+      res = res.replace('"', "")
+      res = res.replace("'", "")
+      res = res.replace("`", "")
+      res = res.replace(");","")
+
+      if "{{" in res:
+        if "}}" in res:
+          start = "{{"
+          end = "}}"
+          check = res[res.find(start) + len(start):res.rfind(end)]
+          if check in allvars:
+            res = res.replace("{{", "")
+            res = res.replace("}}", "")
+            dffdfdfdf = allvars[check]
+            res = res.replace(check, str(dffdfdfdf))
+          else:
+            raise InvalidVariableError(f"'{var}' variable does not exist!")
+      print(res, end="")
+    else:
+      raise InvalidSyntaxError("The 'alert' statement must have a closing ');!")
+  except:
+    raise InvalidSyntaxError("The 'alert' statement must have a closing ');!")
+
+def CONSOLEprint():
+  try:
+    if '");' in lines or "');" in lines or "`);" in lines:
+      wrd = "window.alert("
+      res = lines.partition(wrd)[2]
+      res = res.replace("\");","")
+      res = res.replace('`);',"")
+      res = res.replace('\');',"")
+      res = res.replace("/n", "\n")
+      res = res.replace("/t", "\t")
+      if "\"" in res:
+        split_string = res.split("\");", -1)
+      elif "'" in res:
+        split_string = res.split("\');", -1)
+      elif "`" in res:
+        split_string = res.split("`);", -1)
+      else:
+        raise InvalidSyntaxError("The 'console.print' statement is missing quotations!")
+      res = split_string[0]
+      res = res.replace("\");","")
+      res = res.replace('`);',"")
+      res = res.replace('\');',"")
+      res = res.replace("/n", "\n")
+      res = res.replace("/t", "\t")
+      #colors: res = res.replace("{red}", red)
+      res = res.replace('"', "")
+      res = res.replace("'", "")
+      res = res.replace("`", "")
+      res = res.replace(");","")
+
+      if "{{" in res:
+        if "}}" in res:
+          start = "{{"
+          end = "}}"
+          check = res[res.find(start) + len(start):res.rfind(end)]
+          if check in allvars:
+            res = res.replace("{{", "")
+            res = res.replace("}}", "")
+            dffdfdfdf = allvars[check]
+            res = res.replace(check, str(dffdfdfdf))
+          else:
+            raise InvalidVariableError(f"'{var}' variable does not exist!")
+      print(res, end="")
+    else:
+      raise InvalidSyntaxError("The 'console.print' statement must have a closing ');!")
+  except:
+    raise InvalidSyntaxError("The 'console.print' statement must have a closing ');!")
 
 
 newvar = 0
@@ -103,7 +215,7 @@ for lines in file.readlines():
     if lines == '': 
       pass
     elif lines in string.whitespace:
-      pass
+      raise InvalidIndentationError("Your indentation does not fit the other statements!")
     elif "/*" in lines:
       pass
       wait_until("*/", 0)
@@ -112,12 +224,19 @@ for lines in file.readlines():
     lines = lines.rstrip()
 
     '''
+    elif " " in lines or "\t" in lines or "  " in lines:
+      raise InvalidIndentationError(f"line {line}, Your indentation does not fit the other statements!")
+    '''
+
+    '''
     Note that `;`'s are strictly required in this language
     '''
     
     if "//" in lines:
       pass
       read_line = 0
+    elif "import(\"time\")" in lines or "import('time')" in lines:
+      time_module = True
     elif "var " in lines:
       wrd = "var "
       newvar = lines.partition(wrd)[2]
@@ -174,6 +293,8 @@ for lines in file.readlines():
       split_string = var.split(");", -1)
       var.replace(');','')
       var.replace('\"',"")
+      var.replace('\'',"")
+      var.replace('`',"")
       var = split_string[0]
       var.strip(");")
 
@@ -191,6 +312,8 @@ for lines in file.readlines():
       split_string = var.split(");", -1)
       var.replace(');','')
       var.replace('\"',"")
+      var.replace('\'',"")
+      var.replace('`',"")
       var = split_string[0]
       var.strip(");")
 
@@ -208,6 +331,8 @@ for lines in file.readlines():
       split_string = var.split(");", -1)
       var.replace(');','')
       var.replace('\"',"")
+      var.replace('\'',"")
+      var.replace('`',"")
       var = split_string[0]
       var.strip(");")
 
@@ -222,7 +347,12 @@ for lines in file.readlines():
 
 
     elif "window.alert(" in lines:
-      wrd = "window.alert("
+      WINDOWalert()
+    elif "console.print(" in lines:
+      CONSOLEprint()
+    elif "alert(" in lines:
+      alert()
 
+    
     else:
       pass

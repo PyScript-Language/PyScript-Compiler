@@ -1,3 +1,5 @@
-var jb;;;
+var jb;
 
 console.input(jb);
+
+window.alert('{{jb}}');
