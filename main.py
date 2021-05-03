@@ -29,11 +29,13 @@ def wait_until(somepredicate, timeout, period=0.25, *args, **kwargs):
 #all errors
 class InvalidVariableError(Exception):
   pass
-
 class InvalidSyntaxError(Exception):
   pass
-
 class InvalidIndentationError(Exception):
+  pass
+class InvalidModuleError(Exception):
+  pass
+class InvalidStringIntError(Exception):
   pass
 
 class Error(Exception):
@@ -49,6 +51,12 @@ var1 = "Undefined variable"
 input1 = "Undefined input"
 input2 = "Undefined input"
 input3 = "Undefined input"
+
+'''
+Note that ascii characters are used like this:
+/1234 or /u1243
+Of course, those are examples ;) Another thing I should mention is that not all characters have been made yet ;)
+'''
 
 
 def WINDOWalert():#add f'string
@@ -196,7 +204,9 @@ def CONSOLEprint():
     raise InvalidSyntaxError("The 'console.print' statement must have a closing ');!")
 
 
+
 newvar = 0
+time_module = 0
 file = open(fp)
 readline2 = 0
 for lines in file.readlines():
@@ -235,8 +245,8 @@ for lines in file.readlines():
     if "//" in lines:
       pass
       read_line = 0
-    elif "import(\"time\")" in lines or "import('time')" in lines:
-      time_module = True
+    elif "import(\"time\");" in lines or "import('time');" in lines:#add semicolon error
+      time_module = 1
     elif "var " in lines:
       wrd = "var "
       newvar = lines.partition(wrd)[2]
@@ -252,7 +262,7 @@ for lines in file.readlines():
           newvarTEST = newvar[-1]
           newvar = newvar.replace(";","")#make ; disappear into blank space
       else:
-        raise InvalidSyntaxError("Statement is missing semi-colon!")
+        raise InvalidSyntaxError("Variable statement is missing semi-colon!")
       if " " in newvar:
         raise InvalidSyntaxError("Variables cannot include spaces!")
       else:
@@ -290,60 +300,69 @@ for lines in file.readlines():
     elif "window.prompt(" in lines:
       wrd = "window.prompt("
       var = lines.partition(wrd)[2]
-      split_string = var.split(");", -1)
-      var.replace(');','')
-      var.replace('\"',"")
-      var.replace('\'',"")
-      var.replace('`',"")
-      var = split_string[0]
-      var.strip(");")
+      if var[-1] == ";":
+        split_string = var.split(");", -1)
+        var.replace(');','')
+        var.replace('\"',"")
+        var.replace('\'',"")
+        var.replace('`',"")
+        var = split_string[0]
+        var.strip(");")
 
-      if var in allvars:
-        var = input()
-        allvars[newvar] = var
-      else:
-        if var not in allvars:
-          raise InvalidVariableError(f"'{var}' variable does not exist!")
+        if var in allvars:
+          var = input()
+          allvars[newvar] = var
         else:
-          pass
+          if var not in allvars:
+            raise InvalidVariableError(f"'{var}' variable does not exist!")
+          else:
+            pass
+      else:
+        raise InvalidSyntaxError("'window.prompt' statement is missing semi-colon!")
     elif "prompt(" in lines:
       wrd = "prompt("
       var = lines.partition(wrd)[2]
-      split_string = var.split(");", -1)
-      var.replace(');','')
-      var.replace('\"',"")
-      var.replace('\'',"")
-      var.replace('`',"")
-      var = split_string[0]
-      var.strip(");")
+      if var[-1] == ";":
+        split_string = var.split(");", -1)
+        var.replace(');','')
+        var.replace('\"',"")
+        var.replace('\'',"")
+        var.replace('`',"")
+        var = split_string[0]
+        var.strip(");")
 
-      if var in allvars:
-        var = input()
-        allvars[newvar] = var
-      else:
-        if var not in allvars:
-          raise InvalidVariableError(f"'{var}' variable does not exist!")
+        if var in allvars:
+          var = input()
+          allvars[newvar] = var
         else:
-          pass
+          if var not in allvars:
+            raise InvalidVariableError(f"'{var}' variable does not exist!")
+          else:
+            pass
+      else:
+        raise InvalidSyntaxError("'prompt' statement is missing semi-colon!")
     elif "console.input(" in lines:
       wrd = "console.input("
       var = lines.partition(wrd)[2]
-      split_string = var.split(");", -1)
-      var.replace(');','')
-      var.replace('\"',"")
-      var.replace('\'',"")
-      var.replace('`',"")
-      var = split_string[0]
-      var.strip(");")
+      if var[-1] == ";":
+        split_string = var.split(");", -1)
+        var.replace(');','')
+        var.replace('\"',"")
+        var.replace('\'',"")
+        var.replace('`',"")
+        var = split_string[0]
+        var.strip(");")
 
-      if var in allvars:
-        var = input()
-        allvars[newvar] = var
-      else:
-        if var not in allvars:
-          raise InvalidVariableError(f"'{var}' variable does not exist!")
+        if var in allvars:
+          var = input()
+          allvars[newvar] = var
         else:
-          pass
+          if var not in allvars:
+            raise InvalidVariableError(f"'{var}' variable does not exist!")
+          else:
+            pass
+      else:
+        raise InvalidSyntaxError("'console.input' statement is missing semi-colon!")
 
 
     elif "window.alert(" in lines:
@@ -353,6 +372,28 @@ for lines in file.readlines():
     elif "alert(" in lines:
       alert()
 
+    
+
+
+    elif "time.sleep(" in lines:
+      if time_module == 1:
+        wrd = "time.sleep("
+        res = lines.partition(wrd)[2]
+        
+        if res[-1] == ";":
+          try:
+            res = res.replace(");","")
+            for i in res:
+              if i in ["1","2","3","4","5","6","7","8","9","0"]:
+                time.sleep(int(res))
+              else:
+                raise InvalidStringIntError("Strings cannot be inside integer values!")
+          except:
+            raise InvalidSyntaxError("There must be only one semi-colon!")
+        else:
+          raise InvalidSyntaxError("'time.sleep' is missing semi-colon!")
+      else:
+        raise InvalidModuleError("The 'time' module isn't imported or it doesn't exist!")
     
     else:
       pass

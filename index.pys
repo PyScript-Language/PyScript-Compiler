@@ -1,5 +1,9 @@
 var jb;
 
+import("time");
+
 console.input(jb);
+
+time.sleep(2);
 
 window.alert('{{jb}}');
