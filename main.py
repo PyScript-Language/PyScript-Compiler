@@ -52,56 +52,91 @@ input1 = "Undefined input"
 input2 = "Undefined input"
 input3 = "Undefined input"
 
+
+def timeTIME():
+  if time_module == 1:
+        wrd = "time.time("
+        res = lines.partition(wrd)[2]
+        res = res.replace(");","")
+        print(res)
+
+        if type(res) == str:
+          if res == " " or res == "":
+            time.time()#this won't do anything of course, unless you print it ;)
+          else:
+            raise InvalidStringIntError("'time.time' must be empty!")
+        else:
+          raise InvalidStringIntError("'time.time' must be empty!")
+  else:
+    raise InvalidModuleError("The 'time' module isn't imported or it doesn't exist!")
+
 '''
-Note that ascii characters are used like this:
+Note that ascii characters are used like this in pyscript:
 /1234 or /u1243
 Of course, those are examples ;) Another thing I should mention is that not all characters have been made yet ;)
 '''
-
 
 def WINDOWalert():#add f'string
   try:
     if '");' in lines or "');" in lines or "`);" in lines:
       wrd = "window.alert("
       res = lines.partition(wrd)[2]
-      res = res.replace("\");","")
-      res = res.replace('`);',"")
-      res = res.replace('\');',"")
-      res = res.replace("/n", "\n")
-      res = res.replace("/t", "\t")
-      if "\"" in res:
-        split_string = res.split("\");", -1)
-      elif "'" in res:
-        split_string = res.split("\');", -1)
-      elif "`" in res:
-        split_string = res.split("`);", -1)
+      #print(res)
+      if res[-3] == "\"" and res[0] == "\'" or res[-3] == "\"" and res[0] == "`" or res[-3] == "'" and res[0] == "\"" or res[-3] == "'" and res[0] == "`" or res[-3] == "`" and res[0] == "\"" or res[-3] == "`" and res[0] == "'":
+        raise InvalidSyntaxError("The 'window.alert' starting quotations and ending quotations are different!")
       else:
-        raise InvalidSyntaxError("The 'window.alert' statement is missing quotations!")
-      res = split_string[0]
-      res = res.replace("\");","")
-      res = res.replace('`);',"")
-      res = res.replace('\');',"")
-      res = res.replace("/n", "\n")
-      res = res.replace("/t", "\t")
-      #colors: res = res.replace("{red}", red)
-      res = res.replace('"', "")
-      res = res.replace("'", "")
-      res = res.replace("`", "")
-      res = res.replace(");","")
+        res = res.replace("\");","")
+        res = res.replace('`);',"")
+        res = res.replace('\');',"")
+        res = res.replace("/n", "\n")
+        res = res.replace("/t", "\t")
+        if "\"" in res:
+          split_string = res.split("\");", -1)
+        elif "'" in res:
+          split_string = res.split("\');", -1)
+        elif "`" in res:
+          split_string = res.split("`);", -1)
+        else:
+          raise InvalidSyntaxError("The 'window.alert' statement is missing quotations!")
+        res = split_string[0]
+        res = res.replace("\");","")
+        res = res.replace('`);',"")
+        res = res.replace('\');',"")
+        res = res.replace("/n", "\n")
+        res = res.replace("/t", "\t")
+        #colors: res = res.replace("{red}", red)
+        res = res.replace('"', "")
+        res = res.replace("'", "")
+        res = res.replace("`", "")
+        res = res.replace(");","")
 
-      if "{{" in res:
-        if "}}" in res:
-          start = "{{"
-          end = "}}"
-          check = res[res.find(start) + len(start):res.rfind(end)]
-          if check in allvars:
-            res = res.replace("{{", "")
-            res = res.replace("}}", "")
-            dffdfdfdf = allvars[check]
-            res = res.replace(check, str(dffdfdfdf))
-          else:
-            raise InvalidVariableError(f"'{var}' variable does not exist!")
-      print(res, end="")
+        if "{{" in res:
+          if "}}" in res:
+            start = "{{"
+            end = "}}"
+            check = res[res.find(start) + len(start):res.rfind(end)]
+            if check in allvars:
+              res = res.replace("{{", "")
+              res = res.replace("}}", "")
+              dffdfdfdf = allvars[check]
+              res = res.replace(check, str(dffdfdfdf))
+              PASS = False
+            else:
+              if "time.time(" in check:
+                if check[-1] == "(":
+                  print(time.time())
+                  PASS = True
+                else:
+                  raise InvalidSyntaxError("'time.time' must be empty!")
+              elif "time.strftime(" in check:
+                #print(timeSTRFTIME())
+                PASS = True
+              else:
+                raise InvalidVariableError(f"'{var}' variable does not exist!")
+        if PASS:
+          pass
+        else:
+          print(res, end="")
     else:
       raise InvalidSyntaxError("The 'window.alert' statement must have a closing ');!")
   except:
@@ -112,44 +147,60 @@ def alert():
     if '");' in lines or "');" in lines or "`);" in lines:
       wrd = "alert("
       res = lines.partition(wrd)[2]
-      res = res.replace("\");","")
-      res = res.replace('`);',"")
-      res = res.replace('\');',"")
-      res = res.replace("/n", "\n")
-      res = res.replace("/t", "\t")
-      if "\"" in res:
-        split_string = res.split("\");", -1)
-      elif "'" in res:
-        split_string = res.split("\');", -1)
-      elif "`" in res:
-        split_string = res.split("`);", -1)
+      if res[-3] == "\"" and res[0] == "\'" or res[-3] == "\"" and res[0] == "`" or res[-3] == "'" and res[0] == "\"" or res[-3] == "'" and res[0] == "`" or res[-3] == "`" and res[0] == "\"" or res[-3] == "`" and res[0] == "'":
+        raise InvalidSyntaxError("The 'alert' starting quotations and ending quotations are different!")
       else:
-        raise InvalidSyntaxError("The 'alert' statement is missing quotations!")
-      res = split_string[0]
-      res = res.replace("\");","")
-      res = res.replace('`);',"")
-      res = res.replace('\');',"")
-      res = res.replace("/n", "\n")
-      res = res.replace("/t", "\t")
-      #colors: res = res.replace("{red}", red)
-      res = res.replace('"', "")
-      res = res.replace("'", "")
-      res = res.replace("`", "")
-      res = res.replace(");","")
+        res = res.replace("\");","")
+        res = res.replace('`);',"")
+        res = res.replace('\');',"")
+        res = res.replace("/n", "\n")
+        res = res.replace("/t", "\t")
+        if "\"" in res:
+          split_string = res.split("\");", -1)
+        elif "'" in res:
+          split_string = res.split("\');", -1)
+        elif "`" in res:
+          split_string = res.split("`);", -1)
+        else:
+          raise InvalidSyntaxError("The 'alert' statement is missing quotations!")
+        res = split_string[0]
+        res = res.replace("\");","")
+        res = res.replace('`);',"")
+        res = res.replace('\');',"")
+        res = res.replace("/n", "\n")
+        res = res.replace("/t", "\t")
+        #colors: res = res.replace("{red}", red)
+        res = res.replace('"', "")
+        res = res.replace("'", "")
+        res = res.replace("`", "")
+        res = res.replace(");","")
 
-      if "{{" in res:
-        if "}}" in res:
-          start = "{{"
-          end = "}}"
-          check = res[res.find(start) + len(start):res.rfind(end)]
-          if check in allvars:
-            res = res.replace("{{", "")
-            res = res.replace("}}", "")
-            dffdfdfdf = allvars[check]
-            res = res.replace(check, str(dffdfdfdf))
-          else:
-            raise InvalidVariableError(f"'{var}' variable does not exist!")
-      print(res, end="")
+        if "{{" in res:
+          if "}}" in res:
+            start = "{{"
+            end = "}}"
+            check = res[res.find(start) + len(start):res.rfind(end)]
+            if check in allvars:
+              res = res.replace("{{", "")
+              res = res.replace("}}", "")
+              dffdfdfdf = allvars[check]
+              res = res.replace(check, str(dffdfdfdf))
+            else:
+              if "time.time(" in check:
+                if check[-1] == "(":
+                  print(time.time())
+                  PASS = True
+                else:
+                  raise InvalidSyntaxError("'time.time' must be empty!")
+              elif "time.strftime(" in check:
+                #print(timeSTRFTIME())
+                PASS = True
+              else:
+                raise InvalidVariableError(f"'{var}' variable does not exist!")
+        if PASS:
+          pass
+        else:
+          print(res, end="")
     else:
       raise InvalidSyntaxError("The 'alert' statement must have a closing ');!")
   except:
@@ -158,46 +209,62 @@ def alert():
 def CONSOLEprint():
   try:
     if '");' in lines or "');" in lines or "`);" in lines:
-      wrd = "window.alert("
+      wrd = "console.print("
       res = lines.partition(wrd)[2]
-      res = res.replace("\");","")
-      res = res.replace('`);',"")
-      res = res.replace('\');',"")
-      res = res.replace("/n", "\n")
-      res = res.replace("/t", "\t")
-      if "\"" in res:
-        split_string = res.split("\");", -1)
-      elif "'" in res:
-        split_string = res.split("\');", -1)
-      elif "`" in res:
-        split_string = res.split("`);", -1)
+      if res[-3] == "\"" and res[0] == "\'" or res[-3] == "\"" and res[0] == "`" or res[-3] == "'" and res[0] == "\"" or res[-3] == "'" and res[0] == "`" or res[-3] == "`" and res[0] == "\"" or res[-3] == "`" and res[0] == "'":
+        raise InvalidSyntaxError("The 'console.print' starting quotations and ending quotations are different!")
       else:
-        raise InvalidSyntaxError("The 'console.print' statement is missing quotations!")
-      res = split_string[0]
-      res = res.replace("\");","")
-      res = res.replace('`);',"")
-      res = res.replace('\');',"")
-      res = res.replace("/n", "\n")
-      res = res.replace("/t", "\t")
-      #colors: res = res.replace("{red}", red)
-      res = res.replace('"', "")
-      res = res.replace("'", "")
-      res = res.replace("`", "")
-      res = res.replace(");","")
+        res = res.replace("\");","")
+        res = res.replace('`);',"")
+        res = res.replace('\');',"")
+        res = res.replace("/n", "\n")
+        res = res.replace("/t", "\t")
+        if "\"" in res:
+          split_string = res.split("\");", -1)
+        elif "'" in res:
+          split_string = res.split("\');", -1)
+        elif "`" in res:
+          split_string = res.split("`);", -1)
+        else:
+          raise InvalidSyntaxError("The 'console.print' statement is missing quotations!")
+        res = split_string[0]
+        res = res.replace("\");","")
+        res = res.replace('`);',"")
+        res = res.replace('\');',"")
+        res = res.replace("/n", "\n")
+        res = res.replace("/t", "\t")
+        #colors: res = res.replace("{red}", red)
+        res = res.replace('"', "")
+        res = res.replace("'", "")
+        res = res.replace("`", "")
+        res = res.replace(");","")
 
-      if "{{" in res:
-        if "}}" in res:
-          start = "{{"
-          end = "}}"
-          check = res[res.find(start) + len(start):res.rfind(end)]
-          if check in allvars:
-            res = res.replace("{{", "")
-            res = res.replace("}}", "")
-            dffdfdfdf = allvars[check]
-            res = res.replace(check, str(dffdfdfdf))
-          else:
-            raise InvalidVariableError(f"'{var}' variable does not exist!")
-      print(res, end="")
+        if "{{" in res:
+          if "}}" in res:
+            start = "{{"
+            end = "}}"
+            check = res[res.find(start) + len(start):res.rfind(end)]
+            if check in allvars:
+              res = res.replace("{{", "")
+              res = res.replace("}}", "")
+              dffdfdfdf = allvars[check]
+              res = res.replace(check, str(dffdfdfdf))
+            else:
+              if "time.time(" in check:
+                if check[-1] == "(":
+                  print(time.time())
+                  PASS = True
+                else:
+                  raise InvalidSyntaxError("'time.time' must be empty!")
+              elif "time.strftime(" in check:
+                #print(timeSTRFTIME())
+                PASS = True
+              else:
+                raise InvalidVariableError(f"'{var}' variable does not exist!")
+        if PASS:
+          pass
+        else:
+          print(res, end="")
     else:
       raise InvalidSyntaxError("The 'console.print' statement must have a closing ');!")
   except:
@@ -394,6 +461,14 @@ for lines in file.readlines():
           raise InvalidSyntaxError("'time.sleep' is missing semi-colon!")
       else:
         raise InvalidModuleError("The 'time' module isn't imported or it doesn't exist!")
-    
+
+    elif "time.time(" in lines:#remember to NOT print. It only prints when you do print
+      timeTIME()#this doesnt really do anything.
+
+    elif "time.strftime(" in lines:
+      timeSTRFTIME()
+      if time_module == 1:
+        wrd = "time.strftime("
+
     else:
       pass
