@@ -294,7 +294,6 @@ for lines in file.readlines():
     elif lines in string.whitespace:
       raise InvalidIndentationError("Your indentation does not fit the other statements!")
     elif "/*" in lines:
-      pass
       wait_until("*/", 0)
     elif "//" in lines:
       pass
@@ -314,6 +313,8 @@ for lines in file.readlines():
       read_line = 0
     elif "import(\"time\");" in lines or "import('time');" in lines:#add semicolon error
       time_module = 1
+    elif "import(\"os\");" in lines or "import('os');" in lines:
+      os_module = 1
     elif "var " in lines:
       wrd = "var "
       newvar = lines.partition(wrd)[2]
