@@ -44,6 +44,7 @@ class Error(Exception):
 allvars = {}
 line = 0
 read_line=0
+PASS = False
 getChar1 = "none"
 getChar2 = "none"
 getChar3 = "none"
@@ -69,6 +70,32 @@ def timeTIME():
           raise InvalidStringIntError("'time.time' must be empty!")
   else:
     raise InvalidModuleError("The 'time' module isn't imported or it doesn't exist!")
+
+def osSYSTEM():
+  if os_module == 1:
+    wrd = "os.system("
+    res = lines.partition(wrd)[2]
+
+    if res[-3] == "\"" and res[0] == "\'" or res[-3] == "'" and res[0] == "\"":
+      raise InvalidSyntaxError("The 'os.system' starting quotations and ending quotations are different!")
+    else:
+      if "\"" in res:
+          split_string = res.split("\");", -1)
+      elif "'" in res:
+          split_string = res.split("\');", -1)
+      else:
+          raise InvalidSyntaxError("The 'os.system' statement is missing quotations!")
+      res = res.replace("\"", "")
+      res = res.replace("'", "")
+      res = res.replace(");", "")
+      
+      #print(res)
+      try:
+        os.system(f"{res}")
+      except:
+        raise InvalidModuleError(f"'{res}' command doesn't exist!")
+  else:
+    raise InvalidModuleError("The 'os' module isn't imported or it doesn't exist!")
 
 '''
 Note that ascii characters are used like this in pyscript:
@@ -120,8 +147,9 @@ def WINDOWalert():#add f'string
               res = res.replace("}}", "")
               dffdfdfdf = allvars[check]
               res = res.replace(check, str(dffdfdfdf))
-              PASS = False
             else:
+              global PASS
+              PASS = False
               if "time.time(" in check:
                 if check[-1] == "(":
                   print(time.time())
@@ -132,11 +160,14 @@ def WINDOWalert():#add f'string
                 #print(timeSTRFTIME())
                 PASS = True
               else:
+                #print(var)
+                #print(res)
                 raise InvalidVariableError(f"'{var}' variable does not exist!")
         if PASS:
           pass
         else:
           print(res, end="")
+          print()
     else:
       raise InvalidSyntaxError("The 'window.alert' statement must have a closing ');!")
   except:
@@ -186,6 +217,8 @@ def alert():
               dffdfdfdf = allvars[check]
               res = res.replace(check, str(dffdfdfdf))
             else:
+              global PASS
+              PASS = False
               if "time.time(" in check:
                 if check[-1] == "(":
                   print(time.time())
@@ -201,6 +234,7 @@ def alert():
           pass
         else:
           print(res, end="")
+          print()
     else:
       raise InvalidSyntaxError("The 'alert' statement must have a closing ');!")
   except:
@@ -250,6 +284,8 @@ def CONSOLEprint():
               dffdfdfdf = allvars[check]
               res = res.replace(check, str(dffdfdfdf))
             else:
+              global PASS
+              PASS = False
               if "time.time(" in check:
                 if check[-1] == "(":
                   print(time.time())
@@ -265,6 +301,7 @@ def CONSOLEprint():
           pass
         else:
           print(res, end="")
+          print()
     else:
       raise InvalidSyntaxError("The 'console.print' statement must have a closing ');!")
   except:
@@ -277,9 +314,13 @@ time_module = 0
 file = open(fp)
 readline2 = 0
 for lines in file.readlines():
-    if "/*" in lines:
+
+    #print(lines)
+
+    if "/#" in lines:
       readline2=1
-      wait_until("*/", 0)
+      #print(wait_until("*/", 0))
+      wait_until("#/", 0)
     if readline2 == 1:
       readline2 = 0
       continue
@@ -289,26 +330,32 @@ for lines in file.readlines():
     line+=1
     lines = lines.replace('\n','')
     lines = lines.replace('\t','')
+
+    #print(lines)
+
     if lines == '': 
       pass
     elif lines in string.whitespace:
       raise InvalidIndentationError("Your indentation does not fit the other statements!")
-    elif "/*" in lines:
-      wait_until("*/", 0)
+    elif "/#" in lines:
+      wait_until("#/", 0)
+      readline2 = 1
     elif "//" in lines:
       pass
     lines = lines.rstrip()
 
+    #print(lines[:2])
+
     '''
     elif " " in lines or "\t" in lines or "  " in lines:
-      raise InvalidIndentationError(f"line {line}, Your indentation does not fit the other statements!")
+      raise InvalidIndentationError(f"line {line}, the indentation does not fit the other statements!")
     '''
 
     '''
     Note that `;`'s are strictly required in this language
     '''
     
-    if "//" in lines:
+    if lines[:2] == "//" or "//" in lines:
       pass
       read_line = 0
     elif "import(\"time\");" in lines or "import('time');" in lines:#add semicolon error
@@ -470,6 +517,16 @@ for lines in file.readlines():
       timeSTRFTIME()
       if time_module == 1:
         wrd = "time.strftime("
+
+    
+
+    elif "os.system(" in lines:
+      osSYSTEM()
+    
+    elif "os.environ[" in lines:
+      osENVIRON()
+
+    
 
     else:
       pass
