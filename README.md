@@ -4,7 +4,8 @@
 ## About the language
 #### 
 
-
+## Code of Conduct
+#### Please view the `CODE_OF_CONDUCT` README!
 
 ## PyScript Docs
 #### The docs are located in a separate repo/repl, but the link is [here](https://pyscript-docs.jbloves27.repl.co)
