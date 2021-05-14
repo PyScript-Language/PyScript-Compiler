@@ -8,9 +8,9 @@ if '.pys' in fp:#hmmmm
   try:
     f = open(f'{fp}')
   except:
-    exit()
+    raise Exception("No Such File Exists!")
 else:
-  exit()
+  raise Exception("The file isn't a '.pys' file!")
 
 content = f.read()
 colist = content.split("\n")
@@ -519,12 +519,12 @@ for lines in file.readlines():
         wrd = "time.strftime("
 
     
-
     elif "os.system(" in lines:
       osSYSTEM()
     
     elif "os.environ[" in lines:
-      osENVIRON()
+      #osENVIRON()
+      pass #the function above doesnt even do anything.
 
     
 
