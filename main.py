@@ -523,8 +523,8 @@ for lines in file.readlines():
       osSYSTEM()
     
     elif "os.environ[" in lines:
-      #osENVIRON()
-      pass #the function above doesnt even do anything.
+      osENVIRON()
+      #pass #the function above doesnt even do anything.
 
     
 

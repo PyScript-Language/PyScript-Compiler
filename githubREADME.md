@@ -20,7 +20,7 @@
 <br>
 
 ## License
-#### Please view the [`LICENSE`](https://github.com/PyScript-Language/PyScript-Compiler/blob/master/LICENSE) for more!
+#### This project is under the MIT License. Please view the [`LICENSE`](https://github.com/PyScript-Language/PyScript-Compiler/blob/master/LICENSE) for more!
 
 <br>
 

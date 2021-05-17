@@ -2,15 +2,15 @@
 
 var jb;
 
-import("time");
-import("os");
+// import("time");
+// import("os");
 
-console.input(jb);
+// console.input(jb);
 
-time.sleep(2);
+// time.sleep(2);
 
-console.print('{{jb}}');
+// console.print('{{jb}}');
 
-window.alert("{{time.time();}}");
+// window.alert("{{time.time();}}");
 
-os.system("clear");
+// os.system("clear");

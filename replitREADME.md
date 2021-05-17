@@ -12,7 +12,7 @@
 #### Please view the [`CODE_OF_CONDUCT`](https://github.com/PyScript-Language/PyScript-Compiler/blob/master/CODE_OF_CONDUCT.md) README!
 
 ## License
-#### Please view the [`LICENSE`](https://github.com/PyScript-Language/PyScript-Compiler/blob/master/LICENSE) for more!
+#### This project is under the MIT License. For more, view the [`LICENSE`](https://github.com/PyScript-Language/PyScript-Compiler/blob/master/LICENSE)!
 
 ## PyScript Docs
 #### The docs are located in a separate repo/repl, but the link is [here](https://pyscript-docs.jbloves27.repl.co)
