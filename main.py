@@ -38,7 +38,7 @@ class InvalidModuleError(Exception):
 class InvalidStringIntError(Exception):
   pass
 
-class Error(Exception):
+class TemplateError(Exception):
   pass
 
 allvars = {}
@@ -52,6 +52,7 @@ var1 = "Undefined variable"
 input1 = "Undefined input"
 input2 = "Undefined input"
 input3 = "Undefined input"
+functions = ["time.time(", "os.system(", "os.userinfo(","time.sleep(","time.strftime(","window.alert(","console.print(","alert(","console.input(","window.prompt(","prompt(","if "]
 
 
 def timeTIME():
@@ -91,7 +92,7 @@ def osSYSTEM():
       
       #print(res)
       try:
-        os.system(f"{res}")
+        os.system(str(res))
       except:
         raise InvalidModuleError(f"'{res}' command doesn't exist!")
   else:
@@ -372,14 +373,57 @@ for lines in file.readlines():
       #newvar = variable;
       if newvar[-1] == ";":
         if ";" in newvar[:-1]:
-          raise InvalidSyntaxError("You must only include one semi-colon!")
+          for i in newvar[:-1]:
+            if "'" == i or "\"" == i or "`" == i:
+              pass
+            else:
+              raise InvalidSyntaxError("You must only include one semi-colon!")
         else:
           newvarTEST = newvar[-1]
           newvar = newvar.replace(";","")#make ; disappear into blank space
       else:
         raise InvalidSyntaxError("Variable statement is missing semi-colon!")
+      
       if " " in newvar:
-        raise InvalidSyntaxError("Variables cannot include spaces!")
+        if "=" in newvar:
+          idk = []
+          Continue = True
+          for i in newvar:
+            if Continue:
+              if i == "=":
+                idk.append(i)
+                Continue = False
+              else:
+                idk.append(i)
+            else:
+              if i == " ":
+                idk.append(i)
+                break
+              else:
+                break
+          idk = "".join(idk)
+          newvar = newvar.replace(idk, "")
+            
+          if "'" in newvar or "\"" in newvar or "`" in newvar:
+            if newvar in functions:
+              e
+            else:
+              newvar = str(newvar) # makes sure its a string
+              if newvar[-1] == "'" and newvar[0] == "'" or newvar[-1] == "\"" and newvar[0] == "\"" or newvar[-1] == "`" and newvar[0] == "`":
+                newvar = newvar.replace(newvar[-1], "")
+                #newvar = newvar.replace(newvar[0], "")
+              else:
+                raise InvalidSyntaxError("Starting quotations and end quotations must be the same!")
+              allvars[newvar] = newvar
+          elif newvar == "true":
+            allvars[newvar] = True
+          elif newvar == "false":
+            allvars[newvar] = False
+
+          else:
+            raise InvalidSyntaxError("Variables must be named after there is a equal sign!")
+        else:
+          raise InvalidSyntaxError("Variables cannot include spaces!")
       else:
         allvars[newvar] = 0
 
@@ -488,6 +532,8 @@ for lines in file.readlines():
       alert()
 
     
+    elif "if " in lines:
+      e
 
 
     elif "time.sleep(" in lines:
@@ -522,9 +568,8 @@ for lines in file.readlines():
     elif "os.system(" in lines:
       osSYSTEM()
     
-    elif "os.environ[" in lines:
-      osENVIRON()
-      #pass #the function above doesnt even do anything.
+    elif "os.userinfo(" in lines:
+      osUSERINFO()
 
     
 

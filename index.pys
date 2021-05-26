@@ -1,6 +1,6 @@
 // Note that this also belongs to static folder
 
-var jb;
+var jb = "eee";
 
 // import("time");
 // import("os");
