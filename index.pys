@@ -1,6 +1,8 @@
 // Note that this also belongs to static folder
 
-var jb = "eee";
+import("os");
+
+var jb = os.userinfo();
 
 // import("time");
 // import("os");

@@ -1,7 +1,5 @@
 import time, os, sys, getpass, re, string
 
-#Note: Make modules to contribute to this language
-
 fp = input('FilePath: ')
 
 if '.pys' in fp:#hmmmm
@@ -52,7 +50,7 @@ var1 = "Undefined variable"
 input1 = "Undefined input"
 input2 = "Undefined input"
 input3 = "Undefined input"
-functions = ["time.time(", "os.system(", "os.userinfo(","time.sleep(","time.strftime(","window.alert(","console.print(","alert(","console.input(","window.prompt(","prompt(","if "]
+functions = ["os.userinfo(","time.strftime(","window.alert(","console.print(","alert(","console.input(","window.prompt(","prompt("]
 
 
 def timeTIME():
@@ -97,6 +95,30 @@ def osSYSTEM():
         raise InvalidModuleError(f"'{res}' command doesn't exist!")
   else:
     raise InvalidModuleError("The 'os' module isn't imported or it doesn't exist!")
+
+def osUSERINFO():
+  if os_module == 1:
+    wrd = "os.userinfo("
+    global res
+    res = lines.partition(wrd)[2]
+
+    if "  " in res:
+      raise InvalidSyntaxError("'os.userinfo' cannot include spaces!")
+    else:
+      if ");" in res:
+        res = res.replace(");","")
+      else:
+        raise InvalidSyntaxError("'os.userinfo' must have ');'!")
+      if res == "" or res == " ":
+        try:
+          print(os.environ["REPL_OWNER"])
+        except:
+          raise InvalidModuleError("This function does not exist on your device!")
+      else:
+        raise InvalidModuleError("'os.userinfo' must be empty!")
+  else:
+    raise InvalidModuleError("The 'os' module isn't imported or it doesn't exist!")
+    
 
 '''
 Note that ascii characters are used like this in pyscript:
@@ -404,14 +426,40 @@ for lines in file.readlines():
           idk = "".join(idk)
           newvar = newvar.replace(idk, "")
             
-          if "'" in newvar or "\"" in newvar or "`" in newvar:
+          if "'" in newvar or "\"" in newvar or "`" in newvar or "os.userinfo(" in newvar:
             if newvar in functions:
-              e
+              if "console.print(" in newvar:
+                CONSOLEprint()
+              elif "window.alert(" in newvar:
+                WINDOWalert()
+              elif "alert(" in newvar:
+                alert()
+              
+              elif "window.prompt(" in newvar:
+                e
+              elif "prompt(" in newvar:
+                e
+              elif "console.input(" in newvar:
+                e
+
+              elif "os.userinfo(" in newvar:
+                  osUSERINFO()
+                  allvars[res] = os.environ["REPL_OWNER"]
+              
+              elif "time.strftime(" in newvar:
+                if time_module == 1:
+                  timeSTRFTIME()
+                  #allvars[] = time.strftime()
+                else:
+                  raise InvalidModuleError("The 'time' module isn't imported or it doesn't exist!")
+
             else:
               newvar = str(newvar) # makes sure its a string
               if newvar[-1] == "'" and newvar[0] == "'" or newvar[-1] == "\"" and newvar[0] == "\"" or newvar[-1] == "`" and newvar[0] == "`":
                 newvar = newvar.replace(newvar[-1], "")
                 #newvar = newvar.replace(newvar[0], "")
+              elif "os.userinfo(" in newvar:
+                pass
               else:
                 raise InvalidSyntaxError("Starting quotations and end quotations must be the same!")
               allvars[newvar] = newvar
@@ -426,34 +474,6 @@ for lines in file.readlines():
           raise InvalidSyntaxError("Variables cannot include spaces!")
       else:
         allvars[newvar] = 0
-
-      '''
-      try:
-        newvar2 = lines.partition(wrd)[3]
-        split_string = newvar2.split("\")", -1)
-        newvar2.replace(")","")
-        newvar2.replace('\"', '')
-        newvar2 = newvar2.replace("=",'')
-        newvar2 = newvar2.replace(" ","")
-        print(newvar2)
-        newvar2 = split_string[0]
-        if newvar2 == "=":
-          pass
-        else:
-          newvar2 = lines.partition(wrd)[4]
-          split_string = newvar2.split("\")", -1)
-          newvar2.replace(")","")
-          newvar2.replace('\"', '')
-          newvar2 = split_string[0]
-
-          if newvar2 == "=":
-            pass
-          else:
-            pass
-            #raise InvalidSyntaxError("")
-      except:
-        pass
-      '''
       
 
     elif "window.prompt(" in lines:
