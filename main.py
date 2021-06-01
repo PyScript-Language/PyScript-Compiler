@@ -476,6 +476,7 @@ for lines in file.readlines():
         allvars[newvar] = 0
       
 
+
     elif "window.prompt(" in lines:
       wrd = "window.prompt("
       var = lines.partition(wrd)[2]
