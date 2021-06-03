@@ -1,6 +1,6 @@
 <h1 align = "center"> PyScript </h1>
 <h5 align = "center"> The Unoffical and Offical Language coded by @JBYT27</h5>
-<h6 align = "center"> View the `replitREADME.md` if you are viewing this on replit. 
+<h6 align = "center"> View the <code>replitREADME.md</code> if you are viewing this on replit. 
 
 <br>
 
